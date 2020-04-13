@@ -94,7 +94,6 @@ end getFileName
 on performSaveFileInXcode()
   tell application "System Events"
     tell process "Xcode"
-      set frontmost to true
       click menu item "Save" of menu "File" of menu bar 1
     end tell
   end tell
@@ -121,6 +120,7 @@ on uncrustifyFormat(filePath)
   set uncrustifyCmd to uncrustifyBin & " -c " & uncrustifyConfig & " -f " & getSanitizedPath(filePath)
   runShellCommand(uncrustifyCmd)
 end uncrustifyFormat
+
 
 #on uncrustifyFormatCurrentFilePath()
 #  set filePath to getFilePath()
