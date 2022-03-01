@@ -69,9 +69,23 @@ on getDoc()
 		set title to name of win
 		
 		set _offset to offset of " — " in title
-		if _offset > 0 then set _fileName to text (_offset + 3) thru (length of title) of title
-		set _doc to source document named _fileName
-		return _doc
+		if _offset > 0 then
+			set _fileName to text (_offset + 3) thru (length of title) of title
+			set _doc to source document named _fileName
+			return _doc
+		else
+			tell application "Xcode_13.2.1_fb"
+				set win to first window
+				set title to name of win
+				set docs to every document
+				repeat with doc in docs
+					set p to path of doc
+					if p contains (word 1 of title) then
+						return p
+					end if
+				end repeat
+			end tell
+		end if
 	end tell
 end getDoc
 
@@ -122,11 +136,13 @@ end uncrustifyFormat
 --log getFileName()
 --return getFilePath()
 
-#on uncrustifyFormatCurrentFilePath()
-#  set filePath to getFilePath()
-#  uncrustifyFormat(filePath)
-#end uncrustifyFormatCurrentFilePath
-#
+on uncrustifyFormatCurrentFilePath()
+	set filePath to getFilePath()
+	uncrustifyFormat(filePath)
+end uncrustifyFormatCurrentFilePath
+
+-- uncrustifyFormatCurrentFilePath()
+
 #on arcFormatCurrentFilePath()
 #  set filePath to getFilePath()
 #  set arcFormatCmd to "arc f " & getSanitizedPath(filePath)
